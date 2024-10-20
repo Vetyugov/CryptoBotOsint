@@ -1,6 +1,6 @@
 
 import sqlite3
-SQLITE_FILE_PATH = './osint_tg.sqlite'
+
 
 
 class TgUser():
@@ -9,18 +9,22 @@ class TgUser():
         self.user_tg_id = user_tg_id
 
 class DataBaseService:
-    def __init__(self):
+    SQLITE_FILE_PATH = './osint_tg.sqlite'
+    def __init__(self, db_name:str):
+        if db_name is not None:
+            self.SQLITE_FILE_PATH = db_name
+
         # Создаем подключение к базе данных (файл source будет создан)
         # self.connection = sqlite3.connect(SQLITE_FILE_PATH)
 
         try:
             # пытаемся подключиться к базе данных
-            self.sqlite_connection = sqlite3.connect(SQLITE_FILE_PATH)
+            self.sqlite_connection = sqlite3.connect(self.SQLITE_FILE_PATH)
             self.cursor = self.sqlite_connection.cursor()
-            print("Подключен к SQLite")
+            print(f'Подключен к SQLite {self.SQLITE_FILE_PATH}')
         except:
             # в случае сбоя подключения будет выведено сообщение  в STDOUT
-            print('Can`t establish connection to database')
+            print(f'Can`t establish connection to database {self.SQLITE_FILE_PATH}')
         return
 
     def close_connection(self):
@@ -47,6 +51,5 @@ class DataBaseService:
         )
         self.sqlite_connection.commit()
         print("Запись успешно добавлена таблицу tg_user ", self.cursor.rowcount)
-        self.cursor.close()
 
 

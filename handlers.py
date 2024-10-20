@@ -12,7 +12,7 @@ import cripto_cost_service
 from states import CryptoState
 
 router = Router()
-db = DataBaseService()
+db = DataBaseService(DataBaseService.SQLITE_FILE_PATH)
 
 @router.message(Command("start"))
 async def start_handler(msg: Message):
@@ -74,20 +74,20 @@ async def check_address_result(msg: Message, state: FSMContext):
         return msg.answer(res.get_desc(), reply_markup=tg_key_boards.menu)
 
 
-@router.callback_query(F.data == "send_scam")
-async def send_scam(clbck: CallbackQuery, state: FSMContext):
-    await state.set_state(CryptoState.check_address)
-    await clbck.message.edit_text(text.enter_crypto_address)
-    await clbck.message.answer(text.dialog_exit, reply_markup=tg_key_boards.exit_kb)
+# @router.callback_query(F.data == "send_scam")
+# async def send_scam(clbck: CallbackQuery, state: FSMContext):
+#     await state.set_state(CryptoState.check_address)
+#     await clbck.message.edit_text(text.enter_crypto_address)
+#     await clbck.message.answer(text.dialog_exit, reply_markup=tg_key_boards.exit_kb)
 
 
 
-@router.message(CryptoState.check_address)
-@flags.chat_action("typing")
-async def send_scam_result(msg: Message, state: FSMContext):
-    address = msg.text
-    res = cripto_osint_service.se(address)
-    if res is None:
-        return msg.answer(text.request_error, reply_markup=tg_key_boards.iexit_kb)
-    else:
-        return msg.answer(res.get_desc, disable_web_page_preview=True)
+# @router.message(CryptoState.check_address)
+# @flags.chat_action("typing")
+# async def send_scam_result(msg: Message, state: FSMContext):
+#     address = msg.text
+#     res = cripto_osint_service.(address)
+#     if res is None:
+#         return msg.answer(text.request_error, reply_markup=tg_key_boards.iexit_kb)
+#     else:
+#         return msg.answer(res.get_desc, disable_web_page_preview=True)
