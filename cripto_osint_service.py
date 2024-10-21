@@ -30,7 +30,7 @@ def check_address(address: str):
             return CheckResult(data['address'], data['found'], data['links_count'], data['state'])
     except Exception as e:
         logging.debug(f"<GET failed {send_url}>", e)
-        return None
+    return None
 def send_request(send_url:str):
     if main.MOCK_MODE:
         from requests.models import Response

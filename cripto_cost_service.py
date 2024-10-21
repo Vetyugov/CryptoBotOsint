@@ -23,8 +23,9 @@ def cost(cripto_pair: str):
             result = CostResult(data['amount'], data['currency'])
             return result
     except Exception as e:
-        logging.debug(f"<GET failed {send_url}, {e}")
-        return CostResult('-', "-")
+        print('Произошла ошибка',e )
+        logging.error(f"<GET failed {send_url}, {e}")
+    return CostResult('-', "-")
 
 
 def send_request(send_url:str):
