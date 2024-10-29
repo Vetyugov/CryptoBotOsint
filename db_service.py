@@ -9,7 +9,7 @@ class TgUser():
         self.user_tg_id = user_tg_id
 
 class DataBaseService:
-    SQLITE_FILE_PATH = './osint_tg.sqlite'
+    SQLITE_FILE_PATH = './app_data/osint_tg.sqlite'
     def __init__(self, db_name:str):
         if db_name is not None:
             self.SQLITE_FILE_PATH = db_name
